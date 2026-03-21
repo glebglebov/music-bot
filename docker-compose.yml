@@ -20,8 +20,4 @@ services:
     depends_on:
       - lavalink
     environment:
-      Discord__Token: ${DISCORD_TOKEN}
-      Discord__GuildId: ${DISCORD_GUILD_ID}
-      Lavalink__Host: lavalink
-      Lavalink__Port: 2333
-      Lavalink__Pass: ${LAVALINK_PASSWORD}
+      DOPPLER_TOKEN: ${DOPPLER_TOKEN}
