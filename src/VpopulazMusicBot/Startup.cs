@@ -1,7 +1,6 @@
 ﻿using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
-using Lavalink4NET;
 using Lavalink4NET.Extensions;
 using Lavalink4NET.Players.Queued;
 using VpopulazMusicBot.Options;
@@ -28,13 +27,11 @@ public class Startup(IConfiguration configuration)
             .AddSingleton(sp => new InteractionService(sp.GetRequiredService<DiscordSocketClient>()));
 
         services
-            .Configure<LavalinkNodeOptions>(options =>
+            .ConfigureLavalink(options =>
             {
                 var cfg = configuration
                     .GetSection(ConfigSections.Lavalink.Connection)
                     .Get<LavalinkConnectionOptions>()!;
-
-                Console.WriteLine($"Resolved Lavalink cfg: Host={cfg.Host}, Port={cfg.Port}, Password={(string.IsNullOrEmpty(cfg.Password) ? "<empty>" : "<set>")}");
 
                 options.BaseAddress = new Uri($"http://{cfg.Host}:{cfg.Port}");
                 options.Passphrase = cfg.Password;
