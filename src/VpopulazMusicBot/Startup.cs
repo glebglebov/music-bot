@@ -34,6 +34,8 @@ public class Startup(IConfiguration configuration)
                     .GetSection(ConfigSections.Lavalink.Connection)
                     .Get<LavalinkConnectionOptions>()!;
 
+                Console.WriteLine($"Resolved Lavalink cfg: Host={cfg.Host}, Port={cfg.Port}, Password={(string.IsNullOrEmpty(cfg.Password) ? "<empty>" : "<set>")}");
+
                 options.BaseAddress = new Uri($"http://{cfg.Host}:{cfg.Port}");
                 options.Passphrase = cfg.Password;
             })
