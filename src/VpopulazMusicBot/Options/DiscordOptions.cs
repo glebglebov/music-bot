@@ -1,9 +1,12 @@
-﻿namespace VpopulazMusicBot.Options;
+﻿using JetBrains.Annotations;
 
+namespace VpopulazMusicBot.Options;
+
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class DiscordOptions
 {
     public const string SectionName = "Discord";
 
-    public string Token { get; set; } = string.Empty;
-    public ulong GuildId { get; set; }
+    public required string Token { get; init; }
+    public ulong GuildId { get; init; }
 }

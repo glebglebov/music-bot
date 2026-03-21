@@ -1,11 +1,14 @@
-﻿namespace VpopulazMusicBot.Options;
+﻿using JetBrains.Annotations;
 
+namespace VpopulazMusicBot.Options;
+
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class LavalinkOptions
 {
     public const string SectionName = "Lavalink";
 
-    public string Host { get; set; } = "localhost";
-    public ushort Port { get; set; } = 2333;
-    public string Pass { get; set; } = "youshallnotpass";
-    public string Label { get; set; } = "main-node";
+    public required string Host { get; init; }
+    public ushort Port { get; init; }
+    public required string Pass { get; init; }
+    public required string Label { get; init; }
 }

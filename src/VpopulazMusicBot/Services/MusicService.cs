@@ -30,10 +30,9 @@ public sealed class MusicService(IAudioService audioService)
     public async Task<(bool Ok, string Message)> PlayAsync(SocketGuildUser user, string query, CancellationToken ct = default)
     {
         var voiceChannel = user.VoiceChannel;
+
         if (voiceChannel is null)
-        {
             return (false, "Сначала зайди в голосовой канал.");
-        }
 
         var playerResult = await audioService.Players.RetrieveAsync(
             user.Guild.Id,
@@ -42,18 +41,14 @@ public sealed class MusicService(IAudioService audioService)
             ct);
 
         if (!playerResult.IsSuccess)
-        {
             return (false, "Не удалось создать или получить player.");
-        }
 
         var player = playerResult.Player;
 
         var loadResult = await audioService.Tracks.LoadTrackAsync(query, TrackSearchMode.YouTube, ct);
 
         if (loadResult is null)
-        {
             return (false, "Ничего не нашёл по запросу.");
-        }
 
         await player.PlayAsync(loadResult, enqueue: true, cancellationToken: ct);
 

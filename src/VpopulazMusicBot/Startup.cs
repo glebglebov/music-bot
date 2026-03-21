@@ -31,7 +31,7 @@ public class Startup(IConfiguration configuration)
         {
             var cfg = configuration
                 .GetSection(LavalinkOptions.SectionName)
-                .Get<LavalinkOptions>() ?? new LavalinkOptions();
+                .Get<LavalinkOptions>()!;
 
             options.BaseAddress = new Uri($"http://{cfg.Host}:{cfg.Port}");
             options.Passphrase = cfg.Pass;
