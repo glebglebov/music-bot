@@ -3,10 +3,8 @@
 namespace VpopulazMusicBot.Options;
 
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-public class LavalinkOptions
+public class LavalinkConnectionOptions
 {
-    public const string SectionName = "Lavalink";
-
     public required string Host { get; init; }
     public ushort Port { get; init; }
     public required string Password { get; init; }

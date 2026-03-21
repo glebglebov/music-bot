@@ -11,10 +11,10 @@ public class BotHostedService(
     DiscordSocketClient client,
     InteractionService interactions,
     IServiceProvider services,
-    IOptions<DiscordOptions> options)
+    IOptions<DiscordAuthOptions> options)
     : IHostedService
 {
-    private readonly DiscordOptions _options = options.Value;
+    private readonly DiscordAuthOptions _options = options.Value;
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
@@ -38,12 +38,6 @@ public class BotHostedService(
 
     private async Task OnReadyAsync()
     {
-        if (_options.GuildId != 0)
-        {
-            await interactions.RegisterCommandsToGuildAsync(_options.GuildId);
-            return;
-        }
-
         await interactions.RegisterCommandsGloballyAsync();
     }
 

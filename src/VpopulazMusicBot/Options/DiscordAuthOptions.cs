@@ -3,10 +3,7 @@
 namespace VpopulazMusicBot.Options;
 
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-public class DiscordOptions
+public class DiscordAuthOptions
 {
-    public const string SectionName = "Discord";
-
     public required string Token { get; init; }
-    public ulong GuildId { get; init; }
 }
