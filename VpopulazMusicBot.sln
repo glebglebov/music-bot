@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D672D005-7DDB-4B00-81DE-F34E91786040}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VpopulazMusicBot", "src\VpopulazMusicBot\VpopulazMusicBot.csproj", "{14EB4603-EBB0-452F-8322-3F030F4235BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{39AB8F55-6EB2-42B7-9150-BDB3E7216B2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39AB8F55-6EB2-42B7-9150-BDB3E7216B2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39AB8F55-6EB2-42B7-9150-BDB3E7216B2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39AB8F55-6EB2-42B7-9150-BDB3E7216B2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14EB4603-EBB0-452F-8322-3F030F4235BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14EB4603-EBB0-452F-8322-3F030F4235BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14EB4603-EBB0-452F-8322-3F030F4235BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14EB4603-EBB0-452F-8322-3F030F4235BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{14EB4603-EBB0-452F-8322-3F030F4235BE} = {D672D005-7DDB-4B00-81DE-F34E91786040}
+	EndGlobalSection
+EndGlobal
