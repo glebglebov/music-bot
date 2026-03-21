@@ -1,6 +1,8 @@
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+using VpopulazMusicBot;
 
-app.MapGet("/", () => "Hello World!");
+var app = Host
+    .CreateDefaultBuilder(args)
+    .ConfigureWebHostDefaults(b => b.UseStartup<Startup>())
+    .Build();
 
 app.Run();
