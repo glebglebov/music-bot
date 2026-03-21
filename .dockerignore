@@ -1,0 +1,10 @@
+**/bin/
+**/obj/
+.git
+.gitignore
+.vs
+.vscode
+docker/lavalink/plugins
+.env
+.env.*
+README.md

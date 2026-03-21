@@ -1,0 +1,27 @@
+services:
+  lavalink:
+    image: ghcr.io/lavalink-devs/lavalink:4
+    container_name: lavalink
+    restart: unless-stopped
+    ports:
+      - "2333:2333"
+    volumes:
+      - ./docker/lavalink/application.yml:/opt/Lavalink/application.yml
+      - ./docker/lavalink/plugins:/opt/Lavalink/plugins
+    environment:
+      _JAVA_OPTIONS: "-Xms256m -Xmx512m"
+
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: discord-music-bot
+    restart: unless-stopped
+    depends_on:
+      - lavalink
+    environment:
+      Discord__Token: ${DISCORD_TOKEN}
+      Discord__GuildId: ${DISCORD_GUILD_ID}
+      Lavalink__Host: lavalink
+      Lavalink__Port: 2333
+      Lavalink__Pass: ${LAVALINK_PASSWORD}
