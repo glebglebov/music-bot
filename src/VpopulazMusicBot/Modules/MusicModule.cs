@@ -4,21 +4,14 @@ using VpopulazMusicBot.Services;
 
 namespace VpopulazMusicBot.Modules;
 
-public sealed class MusicModule : InteractionModuleBase<SocketInteractionContext>
+public sealed class MusicModule(MusicService musicService) : InteractionModuleBase<SocketInteractionContext>
 {
-    private readonly MusicService _musicService;
-
-    public MusicModule(MusicService musicService)
-    {
-        _musicService = musicService;
-    }
-
     [SlashCommand("join", "Подключить бота к вашему голосовому каналу")]
     public async Task JoinAsync()
     {
         await DeferAsync();
 
-        var result = await _musicService.JoinAsync((SocketGuildUser)Context.User);
+        var result = await musicService.JoinAsync((SocketGuildUser)Context.User);
         await FollowupAsync(result.Message);
     }
 
@@ -27,7 +20,7 @@ public sealed class MusicModule : InteractionModuleBase<SocketInteractionContext
     {
         await DeferAsync();
 
-        var result = await _musicService.PlayAsync((SocketGuildUser)Context.User, query);
+        var result = await musicService.PlayAsync((SocketGuildUser)Context.User, query);
         await FollowupAsync(result.Message);
     }
 
@@ -36,7 +29,7 @@ public sealed class MusicModule : InteractionModuleBase<SocketInteractionContext
     {
         await DeferAsync();
 
-        var result = await _musicService.SkipAsync(Context.Guild);
+        var result = await musicService.SkipAsync(Context.Guild);
         await FollowupAsync(result.Message);
     }
 
@@ -45,7 +38,7 @@ public sealed class MusicModule : InteractionModuleBase<SocketInteractionContext
     {
         await DeferAsync();
 
-        var result = await _musicService.StopAsync(Context.Guild);
+        var result = await musicService.StopAsync(Context.Guild);
         await FollowupAsync(result.Message);
     }
 
@@ -54,7 +47,7 @@ public sealed class MusicModule : InteractionModuleBase<SocketInteractionContext
     {
         await DeferAsync();
 
-        var result = await _musicService.LeaveAsync(Context.Guild);
+        var result = await musicService.LeaveAsync(Context.Guild);
         await FollowupAsync(result.Message);
     }
 }

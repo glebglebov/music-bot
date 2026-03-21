@@ -1,11 +1,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-COPY ./src/DiscordMusicBot/*.csproj ./DiscordMusicBot/
-RUN dotnet restore ./DiscordMusicBot/DiscordMusicBot.csproj
+COPY ./src/VpopulazMusicBot/*.csproj ./VpopulazMusicBot/
+RUN dotnet restore ./VpopulazMusicBot/VpopulazMusicBot.csproj
 
-COPY ./src/DiscordMusicBot ./DiscordMusicBot
-WORKDIR /src/DiscordMusicBot
+COPY ./src/VpopulazMusicBot ./VpopulazMusicBot
+WORKDIR /src/VpopulazMusicBot
 
 RUN dotnet publish -c Release -o /app/publish --no-restore
 
@@ -14,4 +14,4 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
-ENTRYPOINT ["dotnet", "DiscordMusicBot.dll"]
+ENTRYPOINT ["dotnet", "VpopulazMusicBot.dll"]

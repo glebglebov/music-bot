@@ -9,6 +9,6 @@ public class LavalinkOptions
 
     public required string Host { get; init; }
     public ushort Port { get; init; }
-    public required string Pass { get; init; }
+    public required string Password { get; init; }
     public required string Label { get; init; }
 }

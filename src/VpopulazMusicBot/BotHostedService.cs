@@ -11,10 +11,10 @@ public class BotHostedService(
     DiscordSocketClient client,
     InteractionService interactions,
     IServiceProvider services,
-    IOptions<DiscordOptions> discordOptions)
+    IOptions<DiscordOptions> options)
     : IHostedService
 {
-    private readonly DiscordOptions _discordOptions = discordOptions.Value;
+    private readonly DiscordOptions _options = options.Value;
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
@@ -26,7 +26,7 @@ public class BotHostedService(
 
         await interactions.AddModuleAsync<MusicModule>(services);
 
-        await client.LoginAsync(TokenType.Bot, _discordOptions.Token);
+        await client.LoginAsync(TokenType.Bot, _options.Token);
         await client.StartAsync();
     }
 
@@ -38,14 +38,13 @@ public class BotHostedService(
 
     private async Task OnReadyAsync()
     {
-        if (_discordOptions.GuildId != 0)
+        if (_options.GuildId != 0)
         {
-            await interactions.RegisterCommandsToGuildAsync(_discordOptions.GuildId, true);
+            await interactions.RegisterCommandsToGuildAsync(_options.GuildId);
+            return;
         }
-        else
-        {
-            await interactions.RegisterCommandsGloballyAsync(true);
-        }
+
+        await interactions.RegisterCommandsGloballyAsync();
     }
 
     private async Task OnInteractionCreatedAsync(SocketInteraction interaction)
@@ -60,26 +59,25 @@ public class BotHostedService(
             Console.WriteLine(ex);
 
             if (interaction.Type == InteractionType.ApplicationCommand)
-            {
-                await interaction.GetOriginalResponseAsync()
+                await interaction
+                    .GetOriginalResponseAsync()
                     .ContinueWith(async msgTask =>
                     {
                         if (msgTask.IsCompletedSuccessfully)
                         {
-                            await (await msgTask).DeleteAsync();
+                            var msg = await msgTask;
+                            await msg.DeleteAsync();
                         }
                     });
-            }
         }
     }
 
     private static Task LogAsync(LogMessage message)
     {
         Console.WriteLine($"[{DateTimeOffset.Now:HH:mm:ss}] {message.Severity}: {message.Source} - {message.Message}");
+
         if (message.Exception is not null)
-        {
             Console.WriteLine(message.Exception);
-        }
 
         return Task.CompletedTask;
     }

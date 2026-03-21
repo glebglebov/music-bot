@@ -15,7 +15,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: discord-music-bot
+    container_name: music-bot
     restart: unless-stopped
     depends_on:
       - lavalink
