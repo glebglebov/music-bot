@@ -37,8 +37,6 @@ public class Startup(IConfiguration configuration)
             options.Passphrase = cfg.Pass;
         });
 
-        services.Configure<LavalinkClusterOptions>(_ => { });
-
         services.AddSingleton<MusicService>();
         services.AddHostedService<BotHostedService>();
 
