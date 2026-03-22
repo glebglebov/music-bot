@@ -56,7 +56,7 @@ jobs:
 
             cd /opt/music-bot-docker
 
-            git pull origin master
+            git pull origin main
 
             echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ secrets.GHCR_USER }} --password-stdin
 
