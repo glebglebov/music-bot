@@ -20,7 +20,7 @@ public sealed class MusicService(
         var voiceChannel = user.VoiceChannel;
 
         if (voiceChannel is null)
-            return (false, "Сначала зайди в голосовой канал.");
+            return (false, "Сначала зайди в голосовой канал");
 
         var playerResult = await GetOrCreateQueuedPlayer(
             user.Guild.Id,
@@ -28,27 +28,22 @@ public sealed class MusicService(
             cancellationToken);
 
         return !playerResult.IsSuccess
-            ? (false, $"Не удалось подключиться к Lavalink player: {playerResult.Status.ToString()}")
-            : (true, $"Подключился к **{voiceChannel.Name}**");
+            ? (false, $"Не удалось подключиться к Lavalink: {playerResult.Status.ToString()}")
+            : (true, $"Подключился к каналу **{voiceChannel.Name}**");
     }
 
     public async Task<(bool Ok, string Message)> PlayAsync(
-        SocketGuildUser user,
+        IGuild guild,
         string query,
         CancellationToken cancellationToken = default)
     {
-        var voiceChannel = user.VoiceChannel;
+        var player = await audioService.Players.GetPlayerAsync(guild.Id, cancellationToken);
 
-        if (voiceChannel is null)
-            return (false, "Сначала зайди в голосовой канал.");
+        if (player is null)
+            return (false, $"Бот не подключен к голосовому каналу. Используй команду {Format.Code("/join")}");
 
-        var playerResult = await GetOrCreateQueuedPlayer(
-            user.Guild.Id,
-            voiceChannel.Id,
-            cancellationToken);
-
-        if (!playerResult.IsSuccess)
-            return (false, "Не удалось создать или получить player.");
+        if (player is not IQueuedLavalinkPlayer queuedPlayer)
+            return (false, "Плеер не поддерживает очередь");
 
         var track = await audioService.Tracks.LoadTrackAsync(
             query,
@@ -57,9 +52,9 @@ public sealed class MusicService(
             cancellationToken);
 
         if (track is null)
-            return (false, "Ничего не нашёл по запросу.");
+            return (false, "Ничего не нашёл по запросу :(");
 
-        await playerResult.Player.PlayAsync(track, enqueue: true, cancellationToken: cancellationToken);
+        await queuedPlayer.PlayAsync(track, enqueue: true, cancellationToken: cancellationToken);
 
         return (true, $"Добавил в очередь: **{track.Title}**");
     }
@@ -71,13 +66,13 @@ public sealed class MusicService(
         var player = await audioService.Players.GetPlayerAsync(guild.Id, cancellationToken);
 
         if (player is null)
-            return (false, "Плеер не найден.");
+            return (false, "Бот не подключен к голосовому каналу");
 
         if (player is not IQueuedLavalinkPlayer queuedPlayer)
-            return (false, "Текущий player не поддерживает очередь.");
+            return (false, "Плеер не поддерживает очередь");
 
         await queuedPlayer.SkipAsync(cancellationToken: cancellationToken);
-        return (true, "Трек пропущен.");
+        return (true, "Трек пропущен");
     }
 
     public async Task<(bool Ok, string Message)> StopAsync(
@@ -87,13 +82,13 @@ public sealed class MusicService(
         var player = await audioService.Players.GetPlayerAsync(guild.Id, ct);
 
         if (player is null)
-            return (false, "Плеер не найден.");
+            return (false, "Бот не подключен к голосовому каналу");
 
         if (player is IQueuedLavalinkPlayer queuedPlayer)
             await queuedPlayer.Queue.ClearAsync(ct);
 
         await player.StopAsync(ct);
-        return (true, "Остановил воспроизведение и очистил очередь.");
+        return (true, "Остановил воспроизведение и очистил очередь");
     }
 
     public async Task<(bool Ok, string Message)> LeaveAsync(
@@ -103,10 +98,10 @@ public sealed class MusicService(
         var player = await audioService.Players.GetPlayerAsync(guild.Id, ct);
 
         if (player is null)
-            return (false, "Плеер не найден.");
+            return (false, "Бот не подключен к голосовому каналу");
 
         await player.DisconnectAsync(ct);
-        return (true, "Отключился от голосового канала.");
+        return (true, "Отключился от голосового канала");
     }
 
     private async ValueTask<PlayerResult<QueuedLavalinkPlayer>> GetOrCreateQueuedPlayer(

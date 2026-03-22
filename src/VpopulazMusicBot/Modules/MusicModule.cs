@@ -1,11 +1,13 @@
 ﻿using Discord.Interactions;
+using JetBrains.Annotations;
 using VpopulazMusicBot.Services;
 
 namespace VpopulazMusicBot.Modules;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public sealed class MusicModule(MusicService musicService) : InteractionModuleBase<SocketInteractionContext>
 {
-    [SlashCommand("join", "Подключить бота к вашему голосовому каналу", runMode: RunMode.Async)]
+    [SlashCommand("join", "Подключить бота к голосовому каналу", runMode: RunMode.Async)]
     public async Task JoinAsync()
     {
         await DeferAsync();
@@ -16,14 +18,12 @@ public sealed class MusicModule(MusicService musicService) : InteractionModuleBa
         await FollowupAsync(result.Message);
     }
 
-    [SlashCommand("play", "Проиграть музыку по URL или поисковому запросу")]
+    [SlashCommand("play", "Добавить трек по URL или поисковому запросу")]
     public async Task PlayAsync([Summary("query", "YouTube URL или поисковый запрос")] string query)
     {
         await DeferAsync();
 
-        var user = Context.Guild.GetUser(Context.User.Id);
-
-        var result = await musicService.PlayAsync(user, query);
+        var result = await musicService.PlayAsync(Context.Guild, query);
         await FollowupAsync(result.Message);
     }
 
