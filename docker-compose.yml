@@ -7,7 +7,6 @@ services:
       - "2333:2333"
     volumes:
       - ./docker/lavalink/application.yml:/opt/Lavalink/application.yml
-      - ./docker/lavalink/plugins:/opt/Lavalink/plugins
     environment:
       _JAVA_OPTIONS: "-Xms256m -Xmx512m"
 

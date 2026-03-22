@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{16B998
 		Dockerfile = Dockerfile
 		docker-compose.yml = docker-compose.yml
 		.dockerignore = .dockerignore
+		up.sh = up.sh
 	EndProjectSection
 EndProject
 Global
