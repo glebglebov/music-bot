@@ -8,6 +8,11 @@ services:
     volumes:
       - ./docker/lavalink/application.yml:/opt/Lavalink/application.yml
       - ./docker/lavalink/plugins:/opt/Lavalink/plugins
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "--spider", "http://localhost:2333/version" ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
     environment:
       _JAVA_OPTIONS: "-Xms256m -Xmx512m"
 
@@ -18,6 +23,7 @@ services:
     container_name: music-bot
     restart: unless-stopped
     depends_on:
-      - lavalink
+      lavalink:
+        condition: service_healthy
     environment:
       DOPPLER_TOKEN: ${DOPPLER_TOKEN}

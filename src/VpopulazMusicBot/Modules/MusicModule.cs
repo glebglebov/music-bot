@@ -1,5 +1,4 @@
 ﻿using Discord.Interactions;
-using Discord.WebSocket;
 using VpopulazMusicBot.Services;
 
 namespace VpopulazMusicBot.Modules;
@@ -11,7 +10,9 @@ public sealed class MusicModule(MusicService musicService) : InteractionModuleBa
     {
         await DeferAsync();
 
-        var result = await musicService.JoinAsync((SocketGuildUser)Context.User);
+        var user = Context.Guild.GetUser(Context.User.Id);
+
+        var result = await musicService.JoinAsync(user);
         await FollowupAsync(result.Message);
     }
 
@@ -20,7 +21,9 @@ public sealed class MusicModule(MusicService musicService) : InteractionModuleBa
     {
         await DeferAsync();
 
-        var result = await musicService.PlayAsync((SocketGuildUser)Context.User, query);
+        var user = Context.Guild.GetUser(Context.User.Id);
+
+        var result = await musicService.PlayAsync(user, query);
         await FollowupAsync(result.Message);
     }
 
