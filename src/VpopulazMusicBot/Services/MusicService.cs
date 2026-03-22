@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using Lavalink4NET;
+using Lavalink4NET.Clients;
 using Lavalink4NET.Players;
 using Lavalink4NET.Players.Queued;
 using Lavalink4NET.Rest.Entities.Tracks;
@@ -117,5 +118,10 @@ public sealed class MusicService(
             voiceChannelId,
             PlayerFactory.Queued,
             queuedPlayerOptions,
-            cancellationToken: cancellationToken);
+            new PlayerRetrieveOptions
+            {
+                ChannelBehavior = PlayerChannelBehavior.Join,
+                VoiceStateBehavior = MemberVoiceStateBehavior.RequireSame
+            },
+            cancellationToken);
 }
