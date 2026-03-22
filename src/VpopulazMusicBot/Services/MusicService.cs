@@ -27,8 +27,8 @@ public sealed class MusicService(
             cancellationToken);
 
         return !playerResult.IsSuccess
-            ? (false, "Не удалось подключиться к Lavalink player.")
-            : (true, $"Подключился к **{voiceChannel.Name}**.");
+            ? (false, $"Не удалось подключиться к Lavalink player: {playerResult.Status.ToString()}")
+            : (true, $"Подключился к **{voiceChannel.Name}**");
     }
 
     public async Task<(bool Ok, string Message)> PlayAsync(
