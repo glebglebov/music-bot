@@ -5,7 +5,7 @@ namespace VpopulazMusicBot.Modules;
 
 public sealed class MusicModule(MusicService musicService) : InteractionModuleBase<SocketInteractionContext>
 {
-    [SlashCommand("join", "Подключить бота к вашему голосовому каналу")]
+    [SlashCommand("join", "Подключить бота к вашему голосовому каналу", runMode: RunMode.Async)]
     public async Task JoinAsync()
     {
         await DeferAsync();
