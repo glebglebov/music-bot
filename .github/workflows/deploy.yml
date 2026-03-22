@@ -52,8 +52,17 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /opt/music-bot
+            set -e
+
+            cd /opt/music-bot-docker
+
+            git pull origin master
+
             echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ secrets.GHCR_USER }} --password-stdin
-            docker compose pull bot
-            docker compose up -d bot
+
+            export DOPPLER_TOKEN='${{ secrets.DOPPLER_TOKEN }}'
+
+            docker compose pull
+            docker compose up -d
+
             docker image prune -f
