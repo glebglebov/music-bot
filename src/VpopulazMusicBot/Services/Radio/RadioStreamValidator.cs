@@ -47,7 +47,7 @@ public sealed class RadioStreamValidator : IRadioStreamValidator
 
     public async Task<ExecutionResult> ValidateAsync(string input, CancellationToken cancellationToken = default)
     {
-        if (IsValidUrl(input, out var uri))
+        if (!IsValidUrl(input, out var uri))
             return new ExecutionResult
             {
                 IsSuccessful = false,
