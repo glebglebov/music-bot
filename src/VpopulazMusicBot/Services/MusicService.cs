@@ -6,11 +6,13 @@ using Lavalink4NET.Players;
 using Lavalink4NET.Players.Queued;
 using Lavalink4NET.Rest.Entities.Tracks;
 using Microsoft.Extensions.Options;
+using VpopulazMusicBot.Services.Radio;
 
 namespace VpopulazMusicBot.Services;
 
 public sealed class MusicService(
     IAudioService audioService,
+    IRadioStreamValidator radioStreamValidator,
     IOptions<QueuedLavalinkPlayerOptions> queuedPlayerOptions)
 {
     public async Task<(bool Ok, string Message)> JoinAsync(
@@ -57,6 +59,34 @@ public sealed class MusicService(
         await queuedPlayer.PlayAsync(track, enqueue: true, cancellationToken: cancellationToken);
 
         return (true, $"Добавил в очередь: **{track.Title}**");
+    }
+
+    public async Task<(bool Ok, string Message)> PlayStreamAsync(
+        IGuild guild,
+        string streamUrl,
+        CancellationToken cancellationToken = default)
+    {
+        var player = await audioService.Players.GetPlayerAsync(guild.Id, cancellationToken);
+
+        if (player is null)
+            return (false, $"Бот не подключен к голосовому каналу. Используй команду {Format.Code("/join")}");
+
+        var validationResult = await radioStreamValidator.ValidateAsync(streamUrl, cancellationToken);
+
+        if (!validationResult.IsSuccessful)
+            return (false, validationResult.Message ?? "Невалидный поток");
+
+        var track = await audioService.Tracks.LoadTrackAsync(
+            streamUrl,
+            TrackSearchMode.None,
+            cancellationToken: cancellationToken);
+
+        if (track is null)
+            return (false, "Ничего не нашёл по ссылке :(");
+
+        await player.PlayAsync(track, cancellationToken: cancellationToken);
+
+        return (true, "Запускаю поточек");
     }
 
     public async Task<(bool Ok, string Message)> SkipAsync(

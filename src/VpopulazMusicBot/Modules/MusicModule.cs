@@ -27,6 +27,15 @@ public sealed class MusicModule(MusicService musicService) : InteractionModuleBa
         await FollowupAsync(result.Message);
     }
 
+    [SlashCommand("play-stream", "Запустить аудиопоток")]
+    public async Task PlayStreamAsync([Summary("url", "URL потока")] string query)
+    {
+        await DeferAsync();
+
+        var result = await musicService.PlayStreamAsync(Context.Guild, query);
+        await FollowupAsync(result.Message);
+    }
+
     [SlashCommand("skip", "Пропустить текущий трек")]
     public async Task SkipAsync()
     {

@@ -5,6 +5,7 @@ using Lavalink4NET.Extensions;
 using Lavalink4NET.Players.Queued;
 using VpopulazMusicBot.Options;
 using VpopulazMusicBot.Services;
+using VpopulazMusicBot.Services.Radio;
 
 namespace VpopulazMusicBot;
 
@@ -39,7 +40,10 @@ public class Startup(IConfiguration configuration)
             .Configure<QueuedLavalinkPlayerOptions>(configuration.GetSection(ConfigSections.Lavalink.Players.Queued))
             .AddLavalink();
 
-        services.AddSingleton<MusicService>();
+        services
+            .AddSingleton<MusicService>()
+            .AddSingleton<IRadioStreamValidator, RadioStreamValidator>();
+
         services.AddHostedService<BotHostedService>();
 
         services.AddControllers();
