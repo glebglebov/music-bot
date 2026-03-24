@@ -66,7 +66,11 @@ public sealed class MusicModule(MusicService musicService) : InteractionModuleBa
     [SlashCommand("test", "Эксперименты")]
     public async Task TestAsync()
     {
-        // await DeferAsync();
+        await DeferAsync();
+
+        await Task.Delay(2_000);
+
+        await ModifyOriginalResponseAsync(x => x.Content = "ModifyOriginalResponse");
 
         // await RespondAsync("respond");
 
