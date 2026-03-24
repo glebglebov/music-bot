@@ -65,9 +65,7 @@ public sealed class RadioStreamValidator : IRadioStreamValidator
 
             if (headResponse.IsSuccessStatusCode)
             {
-                var isValid = IsValidStream(headResponse);
-
-                if (isValid)
+                if (IsValidStream(headResponse))
                     return new ExecutionResult
                     {
                         IsSuccessful = true
@@ -95,9 +93,7 @@ public sealed class RadioStreamValidator : IRadioStreamValidator
                     Message = $"Сервер вернул {(int)getResponse.StatusCode} {getResponse.ReasonPhrase}"
                 };
 
-            var isValid = IsValidStream(getResponse);
-
-            if (isValid)
+            if (IsValidStream(getResponse))
                 return new ExecutionResult
                 {
                     IsSuccessful = true
@@ -142,8 +138,7 @@ public sealed class RadioStreamValidator : IRadioStreamValidator
             return true;
 
         // ReSharper disable once ConvertIfStatementToReturnStatement
-        if (GenericAudioMimeTypes.Contains(contentType) ||
-            contentType.StartsWith("audio/", StringComparison.OrdinalIgnoreCase))
+        if (GenericAudioMimeTypes.Contains(contentType) || contentType.StartsWith("audio/", StringComparison.OrdinalIgnoreCase))
             return true;
 
         return false;

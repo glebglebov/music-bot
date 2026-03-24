@@ -62,4 +62,20 @@ public sealed class MusicModule(MusicService musicService) : InteractionModuleBa
         var result = await musicService.LeaveAsync(Context.Guild);
         await FollowupAsync(result.Message);
     }
+
+    [SlashCommand("test", "Эксперименты")]
+    public async Task TestAsync()
+    {
+        await DeferAsync();
+
+        await RespondAsync("respond");
+
+        await Task.Delay(2_000);
+
+        await FollowupAsync("followup 1");
+
+        await Task.Delay(2_000);
+
+        await FollowupAsync("followup 2");
+    }
 }
