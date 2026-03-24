@@ -68,7 +68,7 @@ public sealed class MusicModule(MusicService musicService) : InteractionModuleBa
     {
         // await DeferAsync();
 
-        await RespondAsync("respond");
+        // await RespondAsync("respond");
 
         await Task.Delay(2_000);
 
@@ -77,5 +77,9 @@ public sealed class MusicModule(MusicService musicService) : InteractionModuleBa
         await Task.Delay(2_000);
 
         await FollowupAsync("followup 2");
+
+        await Task.Delay(2_000);
+
+        await ReplyAsync("reply");
     }
 }
